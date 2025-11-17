@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTL的推导以及计算</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', 'SimSun', Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.8;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        .formula-box {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+        .highlight-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .annotation {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        .term-label {
+            display: inline-block;
+            background-color: #fff3cd;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin: 0 3px;
+            border: 1px solid #ffc107;
+        }
+        .section {
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CTL的推导以及计算</h1>
+        
+        <div class="section">
+            <h2>含温度的缺陷形成能定义</h2>
+            
+            <div class="formula-box">
+                <p style="text-align: center;">
+                    \[
+                    F^f(\alpha, q, T; \mu_e) = \left[F(D^q, T) - F(\text{host}, T)\right] - \sum_i n_i \mu_i(T) + q\mu_e(T) + q\varepsilon_{\text{VBM}}(\text{host}, T) + E_{\text{corr}}(q; T) - k_B T \ln g_q
+                    \]
+                </p>
+                <div class="annotation" style="text-align: center;">
+                    <span class="term-label">把原子从库里拿走、放进缺陷</span>
+                    <span class="term-label">给/拿电子</span>
+                    <span class="term-label">把 \(\mu_e\) 锚到 VBM(T)</span>
+                    <span class="term-label">像电荷-势对行</span>
+                </div>
+            </div>
+            
+            <p>转变能级 \(\varepsilon_\alpha(q/q';T)\) 是"让两个电荷态的形成自由能相等的 \(\mu_e^*\)"，即</p>
+            
+            <div class="formula-box">
+                <p style="text-align: center;">
+                    \[
+                    F^f(\alpha, q, T; \mu_e) = F^f(\alpha, q', T; \mu_e).
+                    \]
+                </p>
+            </div>
+            
+            <p>把上式两边减掉 \(\mu_e\)：</p>
+            
+            <div class="formula-box">
+                <p style="text-align: center;">
+                    \[
+                    \mu_e = \frac{F^f(\alpha, q', T; 0) - F^f(\alpha, q, T; 0)}{q - q'}.
+                    \]
+                </p>
+            </div>
+            
+            <p>这里因 \(\mu_e\) 设为 0 的"参考形成自由能"</p>
+            
+            <div class="highlight-box">
+                <p style="text-align: center;">
+                    \[
+                    F^f(\alpha, q, T; 0) \equiv \left[F(D^q, T) - F(\text{host}, T)\right] - \sum_i n_i \mu_i(T) + q\varepsilon_{\text{VBM}}(\text{host}, T) + E_{\text{corr}}(q; T) - k_B T \ln g_q
+                    \]
+                </p>
+            </div>
+            
+            <p>就是"把电子部分的 \(q\mu_e\) 项去掉"的形成自由能。于是得到<strong>相对 VBM(T)</strong> 的 CTL：</p>
+            
+            <div class="highlight-box">
+                <p style="text-align: center;">
+                    \[
+                    \varepsilon_\alpha(q/q';T) \quad (\text{w.r.t. VBM}(T)) = \frac{F^f(\alpha, q', T; 0) - F^f(\alpha, q, T; 0)}{q - q'}.
+                    \]
+                </p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>CTL 计算路线</h2>
+            
+            <div class="formula-box">
+                <p style="text-align: center;">
+                    \[
+                    \varepsilon_\alpha(q/q';T) = \frac{\left[F^f(\alpha, q', T) - F^f(\alpha, q, T)\right]}{q - q'} - \left[\Delta\varepsilon_{\text{VBM}}(\text{host}, T)\right]
+                    \]
+                </p>
+                <div class="annotation" style="text-align: center;">
+                    <span style="display: block; margin-top: 10px;">（含 \(T\) 的缺陷形成自由能差 / 每单位电荷）</span>
+                    <span style="display: block;">（参照能校正：VBM 随 \(T\) 的位移；基准是 VBM(0 K)）</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>展开公式</h2>
+            
+            <p>我们记</p>
+            
+            <div class="formula-box">
+                <p style="text-align: center;">
+                    \[
+                    \Delta F^f_{q-q}(T) = F^f(\alpha, q', T) - F^f(\alpha, q, T)
+                    \]
+                </p>
+            </div>
+            
+            <div class="formula-box">
+                <p style="text-align: center;">
+                    \[
+                    \Delta F^f_{q-q}(T) = \underbrace{E_{\text{tot}}(D^q) - E_{\text{tot}}(D^q)}_{\text{静态能差}} + \underbrace{\left[E_{\text{corr}}(q') - E_{\text{corr}}(q)\right]}_{\text{带电修正}} + \underbrace{\left[\Delta V_{\text{align}}(q') - \Delta V_{\text{align}}(q)\right]}_{\text{势对齐（含常量）}} + \underbrace{\left[\Delta F^q_{\text{vib}}(T) - \Delta F^q_{\text{vib}}(T)\right]}_{\text{振动自由能差}} - k_B T \ln \frac{g_{q'}}{g_q}
+                    \]
+                </p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #dee2e6; color: #999; text-align: center; font-size: 0.9em;">
+            <p>文档生成时间：<script>document.write(new Date().toLocaleString('zh-CN'));</script></p>
+        </div>
+    </div>
+</body>
+</html>
