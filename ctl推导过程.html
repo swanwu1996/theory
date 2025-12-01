@@ -79,18 +79,21 @@
             <div class="formula-box">
                 <p style="text-align: center;">
                     \[
-                    F^f(\alpha, q, T; \mu_e) = \left[F(D^q, T) - F(\text{host}, T)\right] - \sum_i n_i \mu_i(T) + q\mu_e(T) + q\varepsilon_{\text{VBM}}(\text{host}, T) + E_{\text{corr}}(q; T) - k_B T \ln g_q
+                    F^f(\alpha, q, T; \mu_e) =
+                    \underbrace{\left[F(D^q, T) - F(\text{host}, T)\right] - \sum_i n_i \mu_i(T)}_{\text{把原子从库里拿走、放进缺陷}}
+                    + q\left[
+                        \underbrace{\mu_e(T)}_{\text{给/拿电子}}
+                        +
+                        \underbrace{\varepsilon_{\text{VBM}}(\text{host}, T)}_{\text{把 }\mu_e\text{ 锚到 VBM}(T)}
+                    \right]
+                    +
+                    \underbrace{E_{\text{corr}}(q; T)}_{\text{像电荷-势对行}}
+                    - k_B T \ln g_q
                     \]
                 </p>
-                <div class="annotation" style="text-align: center;">
-                    <span class="term-label">把原子从库里拿走、放进缺陷</span>
-                    <span class="term-label">给/拿电子</span>
-                    <span class="term-label">把 \(\mu_e\) 锚到 VBM(T)</span>
-                    <span class="term-label">像电荷-势对行</span>
-                </div>
             </div>
             
-            <p>转变能级 \(\varepsilon_\alpha(q/q';T)\) 是"让两个电荷态的形成自由能相等的 \(\mu_e^*\)"，即</p>
+            <p>转变能级 \(\varepsilon_\alpha(q/q';T)\) 是“让两个电荷态的形成自由能相等的 \(\mu_e^*\)” ，即</p>
             
             <div class="formula-box">
                 <p style="text-align: center;">
@@ -110,7 +113,7 @@
                 </p>
             </div>
             
-            <p>这里因 \(\mu_e\) 设为 0 的"参考形成自由能"</p>
+            <p>这里因 \(\mu_e\) 设为 0 的“参考形成自由能”</p>
             
             <div class="highlight-box">
                 <p style="text-align: center;">
@@ -120,7 +123,7 @@
                 </p>
             </div>
             
-            <p>就是"把电子部分的 \(q\mu_e\) 项去掉"的形成自由能。于是得到<strong>相对 VBM(T)</strong> 的 CTL：</p>
+            <p>就是“把电子部分的 \(q\mu_e\) 项去掉”的形成自由能。于是得到<strong>相对 VBM(T)</strong> 的 CTL：</p>
             
             <div class="highlight-box">
                 <p style="text-align: center;">
@@ -134,7 +137,7 @@
         </div>
         
         <div class="section">
-            <h2>CTL 计算路线</h2>
+            <h2>CTL 计算路线（通用 q / q'）</h2>
             
             <div class="formula-box">
                 <p style="text-align: center;">
@@ -157,7 +160,7 @@
             <div class="formula-box">
                 <p style="text-align: center;">
                     \[
-                    \Delta F^f_{q-q}(T) = F^f(\alpha, q', T) - F^f(\alpha, q, T)
+                    \Delta F^f_{q-q'}(T) = F^f(\alpha, q', T) - F^f(\alpha, q, T)
                     \]
                 </p>
             </div>
@@ -165,7 +168,7 @@
             <div class="formula-box">
                 <p style="text-align: center;">
                     \[
-                    \Delta F^f_{q-q}(T) = \underbrace{E_{\text{tot}}(D^{q'}) - E_{\text{tot}}(D^q)}_{\text{静态能差}} + \underbrace{\left[E_{\text{corr}}(q') - E_{\text{corr}}(q)\right]}_{\text{带电修正}} + \underbrace{\left[\Delta V_{\text{align}}(q') - \Delta V_{\text{align}}(q)\right]}_{\text{势对齐（含常量）}} + \underbrace{\left[\Delta F^q_{\text{vib}}(T) - \Delta F^q_{\text{vib}}(T)\right]}_{\text{振动自由能差}} - k_B T \ln \frac{g_{q'}}{g_q}
+                    \Delta F^f_{q-q'}(T) = \underbrace{E_{\text{tot}}(D^{q'}) - E_{\text{tot}}(D^q)}_{\text{静态能差}} + \underbrace{\left[E_{\text{corr}}(q') - E_{\text{corr}}(q)\right]}_{\text{带电修正}} + \underbrace{\left[\Delta V_{\text{align}}(q') - \Delta V_{\text{align}}(q)\right]}_{\text{势对齐（含常量）}} + \underbrace{\left[\Delta F^q_{\text{vib}}(T) - \Delta F^q_{\text{vib}}(T)\right]}_{\text{振动自由能差}} - k_B T \ln \frac{g_{q'}}{g_q}
                     \]
                 </p>
             </div>
@@ -173,33 +176,35 @@
         
         
         <div class="section">
-            <h2>q = 0 / +1 情形下的显式结论公式</h2>
-            <p>综合上面的推导，对最常见的 \(q = 0 \rightarrow +1\) 情形，可以把有限温度下、相对于 VBM(0 K) 的转变能级写成一条非常直接可用的公式：</p>
+            <h2>一般 \(q \rightarrow q'\) 情形下的显式结论公式</h2>
+            <p>综合上面的推导，对一般的 \(q \rightarrow q'\) 情形，可以把有限温度下、相对于 VBM(0 K) 的转变能级写成一条非常直接可用的公式：</p>
             <div class="highlight-box">
                 <p style="text-align: center;">
                     \[
-                    \varepsilon_\alpha(0/+1; T)
+                    \varepsilon_\alpha(q/q'; T)
                     =
+                    \frac{
                     \Big[
-                        \underbrace{\Delta F_{\text{FEP}}(T)}_{\text{算出的 FEP}}
+                        \underbrace{\Delta F_{\text{FEP}}^{q \to q'}(T)}_{\text{算出的 FEP}}
                         +
                         \underbrace{\Delta E^{\text{FNV}}_{\text{corr}}(T)}_{\text{FNV + 势对齐差}}
-                        - k_B T \ln \frac{g_{+1}}{g_0}
+                        - k_B T \ln \frac{g_{q'}}{g_q}
                     \Big]
+                    }{q - q'}
                     - \Delta \varepsilon_{\text{VBM}}(\text{host}, T).
                     \]
                 </p>
             </div>
             <p>其中：</p>
             <ul>
-                <li>\(\Delta F_{\text{FEP}}(T)\)：由 MD/FEP 得到的缺陷在 \(q=+1\) 和 \(q=0\) 两个电荷态之间的有限温度自由能差（已经包含静态能 + 振动等一切在采样势能面上的贡献）。</li>
-                <li>\(\Delta E^{\text{FNV}}_{\text{corr}}(T)\)：两电荷态之间的 FNV 修正 + 势对齐差，即 \(E_{\text{corr}}^{\text{FNV}}(q=+1;T) - E_{\text{corr}}^{\text{FNV}}(q=0;T)\)。</li>
-                <li>\(- k_B T \ln (g_{+1}/g_0)\)：来自简并度的熵贡献，如果 \(g_{+1} = g_0\) 可以忽略。</li>
+                <li>\(\Delta F_{\text{FEP}}^{q \to q'}(T)\)：由 MD/FEP 得到的缺陷在 \(q'\) 和 \(q\) 两个电荷态之间的有限温度自由能差（已经包含静态能 + 振动等一切在采样势能面上的贡献）。</li>
+                <li>\(\Delta E^{\text{FNV}}_{\text{corr}}(T)\)：两电荷态之间的 FNV 修正 + 势对齐差，即 \(E_{\text{corr}}^{\text{FNV}}(q';T) - E_{\text{corr}}^{\text{FNV}}(q;T)\)。</li>
+                <li>\(- k_B T \ln (g_{q'}/g_q)\)：来自简并度的熵贡献，如果 \(g_{q'} = g_q\) 可以忽略。</li>
                 <li>\(\Delta \varepsilon_{\text{VBM}}(\text{host}, T)\)：host 体系的 VBM 随温度的带边位移，用来把“相对于 VBM(T)”的 CTL 转换到“相对于 VBM(0 K)”的能量零点。</li>
             </ul>
-            <p>其他电荷态组合 \(q \rightarrow q'\) 只需要把上式中的 \(0/+1\) 对应替换为一般的 \(q/q'\)，并相应替换 \(g_{+1}, g_0\) 即可。</p>
+            <p>对于最常见的 \(0/+1\)、\(+1/+2\) 等情形，只需把相应的 \(q, q'\) 以及 \(g_q, g_{q'}\) 代入上式即可。</p>
         </div>
-<div style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #dee2e6; color: #999; text-align: center; font-size: 0.9em;">
+        <div style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #dee2e6; color: #999; text-align: center; font-size: 0.9em;">
             <p>文档生成时间：<script>document.write(new Date().toLocaleString('zh-CN'));</script></p>
         </div>
     </div>
